@@ -1,0 +1,39 @@
+<!--
+    Main screen for the simplified quote import flow.
+    TODO: Bind the button, status text, and DataGrid items to MainViewModel commands/properties.
+-->
+<Window x:Class="QuoteImporter.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Quote Importer"
+        Height="600"
+        Width="1000">
+    <Grid Margin="16">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Top" Margin="0,0,0,12">
+            <!-- TODO: Open a file picker and call MainViewModel.ImportQuote when clicked. -->
+            <Button Content="Import Quote" Width="120" Height="32" Margin="0,0,8,0" />
+            <TextBlock Text="Status:" VerticalAlignment="Center" Margin="8,0,4,0" />
+            <!-- TODO: Replace this placeholder with a binding to StatusMessage. -->
+            <TextBlock Text="Ready" VerticalAlignment="Center" />
+        </StackPanel>
+
+        <!-- TODO: Bind ItemsSource to QuoteItems and add visual styling for invalid rows. -->
+        <DataGrid Grid.Row="1" AutoGenerateColumns="False" IsReadOnly="True">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Line" Binding="{Binding LineNumber}" />
+                <DataGridTextColumn Header="Molport ID" Binding="{Binding MolportId}" />
+                <DataGridTextColumn Header="Product ID" Binding="{Binding ProductId}" />
+                <DataGridTextColumn Header="Supplier" Binding="{Binding Supplier}" />
+                <DataGridTextColumn Header="Quantity" Binding="{Binding Quantity}" />
+                <DataGridTextColumn Header="Unit Price" Binding="{Binding UnitPriceUsd}" />
+                <DataGridTextColumn Header="Net Price" Binding="{Binding NetPriceUsd}" />
+                <DataGridTextColumn Header="Errors" Binding="{Binding ErrorText}" />
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</Window>

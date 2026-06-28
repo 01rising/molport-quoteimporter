@@ -1,0 +1,11 @@
+<!--
+    Defines the WPF application entry point and points startup at MainWindow.xaml.
+    TODO: Add shared styles or application-wide resources here when the UI design grows.
+-->
+<Application x:Class="QuoteImporter.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             StartupUri="MainWindow.xaml">
+    <Application.Resources>
+    </Application.Resources>
+</Application>
