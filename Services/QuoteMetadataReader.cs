@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using ClosedXML.Excel;
 using QuoteImporter.Models;
 
@@ -10,6 +11,7 @@ namespace QuoteImporter.Services
     {
         private const int MetadataSearchRows = 12;
         private const int MetadataSearchColumns = 18;
+        private const int FooterSearchColumns = 18;
 
         public static QuoteMetadata Read(IXLWorksheet worksheet)
         {
@@ -36,7 +38,20 @@ namespace QuoteImporter.Services
                     "Shipping address"),
                 BillingAddress = FindMetadataValueByLabels(
                     worksheet,
-                    "Billing address")
+                    "Billing address"),
+                TotalDiscountUsd = FindFooterMoneyValueByLabels(
+                    worksheet,
+                    "Total Applied Discount Savings"),
+                TariffSurchargeUsd = FindFooterMoneyValueByLabels(
+                    worksheet,
+                    "Tariff Surcharge"),
+                MolportShippingUsd = FindFooterMoneyValueByLabels(
+                    worksheet,
+                    "Consolidated Molport Shipping",
+                    "Molport shipping"),
+                TotalOrderValueUsd = FindFooterMoneyValueByLabels(
+                    worksheet,
+                    "Total order value")
             };
         }
 
@@ -71,6 +86,50 @@ namespace QuoteImporter.Services
 
                     // Other metadata uses the label cell followed by the value in the same row.
                     return FindNextCellTextInRow(worksheet, row, column + 1);
+                }
+            }
+
+            return null;
+        }
+
+        private static decimal? FindFooterMoneyValueByLabels(IXLWorksheet worksheet, params string[] labels)
+        {
+            var lastRow = worksheet.LastRowUsed()?.RowNumber() ?? 1;
+
+            for (var row = 1; row <= lastRow; row++)
+            {
+                for (var column = 1; column <= FooterSearchColumns; column++)
+                {
+                    var text = ExcelCellReader.ReadText(worksheet, row, column);
+
+                    if (string.IsNullOrWhiteSpace(text) || FindMatchingMetadataLabel(text, labels) == null)
+                    {
+                        continue;
+                    }
+
+                    var sameCellValue = TryParseMoney(CleanMetadataText(text, labels[0]));
+
+                    if (sameCellValue != null)
+                    {
+                        return sameCellValue;
+                    }
+
+                    return FindNextMoneyValueInRow(worksheet, row, column + 1);
+                }
+            }
+
+            return null;
+        }
+
+        private static decimal? FindNextMoneyValueInRow(IXLWorksheet worksheet, int row, int startColumn)
+        {
+            for (var column = startColumn; column <= FooterSearchColumns; column++)
+            {
+                var value = ExcelCellReader.ReadDecimal(worksheet, row, column);
+
+                if (value != null)
+                {
+                    return value;
                 }
             }
 
@@ -148,6 +207,25 @@ namespace QuoteImporter.Services
             }
 
             return text[(separatorIndex + 1)..].Trim();
+        }
+
+        private static decimal? TryParseMoney(string? text)
+        {
+            if (string.IsNullOrWhiteSpace(text))
+            {
+                return null;
+            }
+
+            if (decimal.TryParse(
+                    text.Replace("USD", "", StringComparison.OrdinalIgnoreCase).Trim(),
+                    NumberStyles.Any,
+                    CultureInfo.InvariantCulture,
+                    out var value))
+            {
+                return value;
+            }
+
+            return null;
         }
     }
 }

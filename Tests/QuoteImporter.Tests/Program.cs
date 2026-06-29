@@ -126,6 +126,15 @@ namespace QuoteImporter.Tests
             AssertTrue(
                 document.Items[0].ShippingInfo != null,
                 "First sample quote row should have matching shipping limitation details.");
+            AssertTrue(
+                document.Metadata.TariffSurchargeUsd != null,
+                "Sample quote should include tariff surcharge metadata.");
+            AssertTrue(
+                document.Metadata.MolportShippingUsd != null,
+                "Sample quote should include Molport shipping metadata.");
+            AssertTrue(
+                document.Metadata.TotalOrderValueUsd != null,
+                "Sample quote should include total order value metadata.");
         }
 
         private static QuoteItem CreateValidQuoteItem()

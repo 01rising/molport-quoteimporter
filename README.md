@@ -62,11 +62,11 @@ The test project uses a console runner and currently covers validation rules plu
 
 ## AI usage
 
-AI assistance was used to:
-    scaffold the initial project structure with folders, class skeletons, method signatures, and TODO comments;
-    maintain explanatory comments;
-    planned and seperated the application into different parts and what they should do
-    generating the simple unit tests at the end for some automated testing
+- AI assistance was used to:
+- scaffold the initial project structure with folders, class skeletons, method signatures, and TODO comments;
+- maintain explanatory comments;
+- planned and seperated the application into different parts and what they should do
+- generating the simple unit tests at the end for some automated testing
 
 
 

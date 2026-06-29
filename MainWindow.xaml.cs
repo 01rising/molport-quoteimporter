@@ -109,6 +109,10 @@ namespace QuoteImporter
                 $"Valid until: {FormatMetadataValue(_metadata.ValidUntil)}\n\n" +
                 $"Shipping address:\n{FormatMetadataValue(_metadata.ShippingAddress)}\n\n" +
                 $"Billing address:\n{FormatMetadataValue(_metadata.BillingAddress)}\n\n" +
+                $"Total discount: {FormatMoneyValue(_metadata.TotalDiscountUsd)}\n" +
+                $"Tariff surcharge: {FormatMoneyValue(_metadata.TariffSurchargeUsd)}\n" +
+                $"Molport shipping: {FormatMoneyValue(_metadata.MolportShippingUsd)}\n" +
+                $"Total order value: {FormatMoneyValue(_metadata.TotalOrderValueUsd)}\n\n" +
                 $"Total rows: {_summary.TotalRows}\n" +
                 $"Valid rows: {_summary.ValidRows}\n" +
                 $"Invalid rows: {_summary.InvalidRows}\n" +
@@ -143,6 +147,11 @@ namespace QuoteImporter
         private static string FormatMetadataValue(string? value)
         {
             return string.IsNullOrWhiteSpace(value) ? "(not found)" : value;
+        }
+
+        private static string FormatMoneyValue(decimal? value)
+        {
+            return value == null ? "(not found)" : $"{value.Value:N2} USD";
         }
 
         private static string BuildRowDetailsText(QuoteItem item)

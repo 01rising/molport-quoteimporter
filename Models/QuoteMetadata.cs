@@ -12,5 +12,13 @@ namespace QuoteImporter.Models
         public string? ShippingAddress { get; set; }
 
         public string? BillingAddress { get; set; }
+
+        public decimal? TotalDiscountUsd { get; set; }
+
+        public decimal? TariffSurchargeUsd { get; set; }
+
+        public decimal? MolportShippingUsd { get; set; }
+
+        public decimal? TotalOrderValueUsd { get; set; }
     }
 }
