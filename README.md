@@ -62,13 +62,13 @@ The test project uses a console runner and currently covers validation rules plu
 
 ## AI usage
 
-- AI assistance was used to:
-- scaffold the initial project structure with folders, class skeletons, method signatures, and TODO comments;
-- maintain explanatory comments;
-- planned and seperated the application into different parts and what they should do
-- generating the simple unit tests at the end for some automated testing
-
-
+- I used ChatGPT/Codex as the AI coding assistant during the task.
+- It helped scaffold the initial WPF project structure, including folders, class skeletons, method signatures, and early TODO comments.
+- It helped plan how to separate the application into models, services, UI code, parsing logic, validation logic, and tests.
+- It helped implement and refine Excel parsing with ClosedXML, including metadata parsing, header-based column detection, and the `Shipping Limitations` worksheet.
+- It helped maintain explanatory code comments and update this README as the project changed.
+- It helped generate a small automated test project for validation rules and sample workbook parsing.
+- What worked well: using AI for incremental changes, refactoring suggestions, parsing edge cases, and quick test coverage was useful if there were any errors.
 
 ## Improvements with more time
 
