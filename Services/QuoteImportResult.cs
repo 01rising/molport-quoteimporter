@@ -13,6 +13,7 @@ namespace QuoteImporter.Services
         public bool Success { get; set; }
         // User-facing error text for file selection, workbook loading, or parsing failures.
         public string? ErrorMessage { get; set; }
+        public QuoteMetadata Metadata { get; set; } = new();
         public IEnumerable<QuoteItem> Items { get; set; } = new List<QuoteItem>();
     }
 }

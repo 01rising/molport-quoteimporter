@@ -10,6 +10,9 @@
         Width="1000">
     <Grid Margin="16">
         <Grid.RowDefinitions>
+            <!-- Toolbar, compact result grid, resize handle, and selected-row details. -->
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="2*" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
@@ -22,8 +25,18 @@
             <TextBlock x:Name="SummaryText" Text="Ready" VerticalAlignment="Center" />
         </StackPanel>
 
-        <!-- Explicit columns keep the review grid focused on the fields needed for validation. -->
-        <DataGrid x:Name="QuoteGrid" Grid.Row="1" AutoGenerateColumns="False" IsReadOnly="True">
+        <!-- The grid stays compact for scanning; selecting a row fills the full details panel below. -->
+        <DataGrid x:Name="QuoteGrid"
+                  Grid.Row="1"
+                  AutoGenerateColumns="False"
+                  IsReadOnly="True"
+                  SelectionMode="Single"
+                  SelectionUnit="FullRow"
+                  CanUserSortColumns="True"
+                  CanUserResizeColumns="True"
+                  HorizontalScrollBarVisibility="Auto"
+                  VerticalScrollBarVisibility="Auto"
+                  SelectionChanged="QuoteGrid_SelectionChanged">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Line" Binding="{Binding LineNumber}" />
                 <DataGridTextColumn Header="Molport ID" Binding="{Binding MolportId}" />
@@ -35,5 +48,32 @@
                 <DataGridTextColumn Header="Errors" Binding="{Binding ErrorText}" />
             </DataGrid.Columns>
         </DataGrid>
+
+        <!-- Lets the user give more space to either the grid or the details panel. -->
+        <GridSplitter Grid.Row="2"
+                      Height="6"
+                      HorizontalAlignment="Stretch"
+                      VerticalAlignment="Center" />
+
+        <Border Grid.Row="3"
+                BorderBrush="#CCCCCC"
+                BorderThickness="1"
+                Padding="12"
+                Margin="0,8,0,0">
+            <DockPanel>
+                <TextBlock DockPanel.Dock="Top"
+                           Text="Selected row details"
+                           FontWeight="SemiBold"
+                           Margin="0,0,0,8" />
+                <!-- The details text shows every mapped QuoteItem property for the selected row. -->
+                <ScrollViewer VerticalScrollBarVisibility="Auto"
+                              HorizontalScrollBarVisibility="Auto">
+                    <TextBlock x:Name="RowDetailsText"
+                               Text="Select a quote row to see all columns."
+                               FontFamily="Consolas"
+                               TextWrapping="NoWrap" />
+                </ScrollViewer>
+            </DockPanel>
+        </Border>
     </Grid>
 </Window>

@@ -29,6 +29,9 @@ namespace QuoteImporter.Models
         public string? Purity { get; set; }
         public string? Iupac { get; set; }
         public string? Compliance { get; set; }
+
+        public QuoteShippingInfo? ShippingInfo { get; set; }
+
         // Calculated net price = Unit price x Quantity + Discount.
         public decimal? CalculatedNetPriceUsd
         {

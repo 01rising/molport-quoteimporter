@@ -9,4 +9,8 @@
   <ItemGroup>
     <PackageReference Include="ClosedXML" Version="0.105.0" />
   </ItemGroup>
+  <ItemGroup>
+    <!-- Keep automated test source files out of the WPF app assembly. -->
+    <Compile Remove="Tests\**\*.cs" />
+  </ItemGroup>
 </Project>

@@ -77,11 +77,6 @@ namespace QuoteImporter.Services
                 item.Errors.Add("Unit price cannot be negative.");
             }
 
-            if (item.DiscountUsd == null)
-            {
-                item.Errors.Add("Discount is required.");
-            }
-
             if (item.NetPriceUsd == null)
             {
                 item.Errors.Add("Net price is required.");
