@@ -1,6 +1,6 @@
 <!--
-    Main screen for the simplified quote import flow.
-    TODO: Bind the button, status text, and DataGrid items to MainViewModel commands/properties.
+    Main screen for the simplified quote import flow. The code-behind wires these controls
+    to the current import workflow while the ViewModel remains available for later binding work.
 -->
 <Window x:Class="QuoteImporter.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -15,15 +15,15 @@
         </Grid.RowDefinitions>
 
         <StackPanel Orientation="Horizontal" VerticalAlignment="Top" Margin="0,0,0,12">
-            <!-- TODO: Open a file picker and call MainViewModel.ImportQuote when clicked. -->
-            <Button Content="Import Quote" Width="120" Height="32" Margin="0,0,8,0" />
+            <!-- Buttons start the two user-visible actions for the import demo. -->
+            <Button Content="Load Quote" Width="120" Height="32" Margin="0,0,8,0" Click="LoadQuote_Click" />
+            <Button Content="Import Quote" Width="120" Height="32" Margin="0,0,16,0" Click="ImportQuote_Click" />
             <TextBlock Text="Status:" VerticalAlignment="Center" Margin="8,0,4,0" />
-            <!-- TODO: Replace this placeholder with a binding to StatusMessage. -->
-            <TextBlock Text="Ready" VerticalAlignment="Center" />
+            <TextBlock x:Name="SummaryText" Text="Ready" VerticalAlignment="Center" />
         </StackPanel>
 
-        <!-- TODO: Bind ItemsSource to QuoteItems and add visual styling for invalid rows. -->
-        <DataGrid Grid.Row="1" AutoGenerateColumns="False" IsReadOnly="True">
+        <!-- Explicit columns keep the review grid focused on the fields needed for validation. -->
+        <DataGrid x:Name="QuoteGrid" Grid.Row="1" AutoGenerateColumns="False" IsReadOnly="True">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Line" Binding="{Binding LineNumber}" />
                 <DataGridTextColumn Header="Molport ID" Binding="{Binding MolportId}" />

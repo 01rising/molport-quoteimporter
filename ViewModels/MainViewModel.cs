@@ -5,7 +5,6 @@ using QuoteImporter.Services;
 namespace QuoteImporter.ViewModels
 {
     // Coordinates the import workflow between the WPF view and service classes.
-    // TODO: Implement INotifyPropertyChanged before binding mutable status values in XAML.
     public class MainViewModel
     {
         private readonly ExcelQuoteReader _excelQuoteReader;
@@ -28,9 +27,7 @@ namespace QuoteImporter.ViewModels
 
         public void ImportQuote(string filePath)
         {
-            // TODO: Make this async so larger Excel files do not block the UI thread.
-            // TODO: Update StatusMessage before and after each import stage.
-            // TODO: Wire up Excel reading, validation, and processing in this method.
+            // This view-model workflow mirrors the code-behind import path for future binding work.
             var result = _excelQuoteReader.ReadQuote(filePath);
 
             QuoteItems.Clear();
@@ -40,8 +37,8 @@ namespace QuoteImporter.ViewModels
                 QuoteItems.Add(item);
             }
 
-            _quoteProcessor.ProcessQuoteItems(QuoteItems);
-            // TODO: Surface result.ErrorMessage when the read fails.
+            _quoteProcessor.CreateSummary(QuoteItems);
+            // Keep the status simple for now; detailed read errors are carried on the result object.
             StatusMessage = result.Success ? "Import complete" : "Import not implemented";
         }
     }

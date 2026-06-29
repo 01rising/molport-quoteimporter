@@ -3,7 +3,6 @@ using System.Collections.Generic;
 namespace QuoteImporter.Models
 {
     // Represents one product row read from the quote spreadsheet.
-    // TODO: Add display-friendly formatting or notification support if the grid needs live updates.
     public class QuoteItem
     {
         // Source row metadata helps users trace validation errors back to Excel.
@@ -30,14 +29,42 @@ namespace QuoteImporter.Models
         public string? Purity { get; set; }
         public string? Iupac { get; set; }
         public string? Compliance { get; set; }
-        public decimal? CalculatedNetPriceUsd { get; set; }
-        public decimal? NetPriceDifferenceUsd { get; set; }
+        // Calculated net price = Unit price x Quantity + Discount.
+        public decimal? CalculatedNetPriceUsd
+        {
+            get
+            {
+                if (UnitPriceUsd == null || Quantity == null)
+                {
+                    return null;
+                }
+
+                var discount = DiscountUsd ?? 0m;
+
+                return UnitPriceUsd.Value * Quantity.Value + discount;
+            }
+        }
+
+        public decimal? NetPriceDifferenceUsd
+        {
+            get
+            {
+                if (CalculatedNetPriceUsd == null || NetPriceUsd == null)
+                {
+                    return null;
+                }
+
+                return NetPriceUsd.Value - CalculatedNetPriceUsd.Value;
+            }
+        }
 
         // Validation state used by the UI to explain and highlight invalid rows.
-        // TODO: Keep ErrorText synchronized with Errors after validation is implemented.
-        public List<string> Errors { get; set; } = new List<string>();
-        public bool IsValid { get; set; } = true;
-        public string? Status { get; set; }
-        public string? ErrorText { get; set; }
+        public List<string> Errors { get; set; } = new();
+
+        public bool IsValid => Errors.Count == 0;
+
+        public string Status => IsValid ? "Valid" : "Invalid";
+
+        public string ErrorText => string.Join("; ", Errors);
     }
 }

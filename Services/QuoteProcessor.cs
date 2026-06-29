@@ -1,27 +1,38 @@
 using System.Collections.Generic;
+using System.Linq;
 using QuoteImporter.Models;
 
 namespace QuoteImporter.Services
 {
     // Applies derived calculations after rows have been read and validated.
-    // TODO: Keep this class focused on calculations, not file reading or UI updates.
     public class QuoteProcessor
     {
         public QuoteProcessor()
         {
         }
 
-        public void ProcessQuoteItems(IEnumerable<QuoteItem> quoteItems)
+        public QuoteImportResult CreateSummary(IEnumerable<QuoteItem> quoteItems)
         {
             if (quoteItems == null)
             {
-                return;
+                return new QuoteImportResult();
             }
 
-            // TODO: Compute derived values for quote rows and prepare them for display.
-            // TODO: Calculate UnitPriceUsd * Quantity + DiscountUsd when all inputs exist.
-            // TODO: Store the difference between Excel net price and calculated net price.
-            // TODO: Set a clear Status value such as "Valid" or "Needs review" for the grid.
+            var items = quoteItems.ToList();
+
+            // Summary values are calculated from the already-validated rows.
+            return new QuoteImportResult
+            {
+                TotalRows = items.Count,
+
+                ValidRows = items.Count(item => item.IsValid),
+
+                InvalidRows = items.Count(item => !item.IsValid),
+
+                TotalValidNetPriceUsd = items
+                    .Where(item => item.IsValid)
+                    .Sum(item => item.NetPriceUsd ?? 0m)
+            };
         }
     }
 }
